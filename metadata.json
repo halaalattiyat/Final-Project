@@ -1,0 +1,7 @@
+{
+  "name": "تباشير خير (Tabasheer Khair)",
+  "description": "A premium medical tourism platform in Jordan, providing personalized treatment programs for international patients with a classic, Jordanian-inspired aesthetic.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

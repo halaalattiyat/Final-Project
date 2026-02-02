@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model MedicalService {
+  id            String       @id @default(cuid())
+  specialty     String
+  titleAr       String
+  titleEn       String
+  descriptionAr String
+  icon          String
+  rating        Float
+  reviewCount   Int
+  keyFeatures   KeyFeature[]
+}
+
+model KeyFeature {
+  id               String         @id @default(cuid())
+  feature          String
+  medicalServiceId String
+  medicalService   MedicalService @relation(fields: [medicalServiceId], references: [id])
+}
+
+model Hospital {
+  id              String             @id @default(cuid())
+  nameAr          String
+  nameEn          String
+  location        String
+  type            String
+  category        String
+  rating          Float
+  reviewCount     Int
+  image           String
+  description     String
+  establishedYear Int
+  accreditations  Accreditation[]
+  specialties     Specialty[]
+  stats           Stats?
+  programs        TreatmentProgram[]
+}
+
+model Specialty {
+  id         String   @id @default(cuid())
+  name       String
+  hospitalId String
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+}
+
+model Accreditation {
+  id         String   @id @default(cuid())
+  name       String
+  hospitalId String
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+}
+
+model TreatmentProgram {
+  id            String    @id @default(cuid())
+  hospitalId    String
+  specialty     String
+  titleAr       String
+  titleEn       String
+  durationDays  Int
+  basePrice     Float
+  descriptionAr String
+  includes      Include[]
+  roadmap       Roadmap[]
+  hospital      Hospital  @relation(fields: [hospitalId], references: [id])
+}
+
+model Include {
+  id                 String           @id @default(cuid())
+  item               String
+  treatmentProgramId String
+  treatmentProgram   TreatmentProgram @relation(fields: [treatmentProgramId], references: [id])
+}
+
+model Stats {
+  id           String   @id @default(cuid())
+  beds         Int
+  doctors      Int
+  surgeryRooms Int
+  hospitalId   String   @unique
+  hospital     Hospital @relation(fields: [hospitalId], references: [id])
+}
+
+model Roadmap {
+  id                 String           @id @default(cuid())
+  day                String
+  titleAr            String
+  descriptionAr      String
+  treatmentProgramId String
+  treatmentProgram   TreatmentProgram @relation(fields: [treatmentProgramId], references: [id])
+}
